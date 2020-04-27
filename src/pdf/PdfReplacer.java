@@ -103,11 +103,17 @@ public class PdfReplacer {
 				canvas.beginText();
 				for (Entry<String, ReplaceRegion> entry : entrys) {
 					ReplaceRegion value = entry.getValue();
+					BaseFont bf = null;
 					//设置字体
-					BaseFont bf  = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", BaseFont.EMBEDDED);
+					String path = "pdf/STXinwei.ttf";
+					try{
+						bf  = BaseFont.createFont(path, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+					}catch(Exception e){
+						bf  = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H",BaseFont.NOT_EMBEDDED);
+					}
 					canvas.setFontAndSize(new Font(bf, FONTSIZE).getBaseFont(), FONTSIZE);
 					canvas.setColorFill(BaseColor.BLUE);
-					canvas.setTextMatrix(value.getX(),value.getY());
+					canvas.setTextMatrix(replaceTextMap.get(value.getAliasName()).toString().length() == 3 ? value.getX() : value.getX() - 5,value.getY());
 					canvas.showText((String) replaceTextMap.get(value.getAliasName()));
 				}
 				canvas.endText();
